@@ -1,20 +1,17 @@
 #!/bin/bash
 
 # Set path
-echo '::group::Copying file from $WORKPATH to /tmp/gh-action'
+# echo '::group::Copying file from $WORKPATH to /tmp/gh-action'
 WORKPATH=$GITHUB_WORKSPACE/$INPUT_PATH
-# Set path permision
-sudo -u builder mkdir /tmp/gh-action
-sudo -u builder cp -rfv $WORKPATH/.git /tmp/gh-action/.git
-sudo -u builder cp -fv $WORKPATH/PKGBUILD /tmp/gh-action/PKGBUILD
-cd /tmp/gh-action
-echo '::endgroup::'
-
+# # Set path permision
+# sudo -u builder cp -rfv $WORKPATH /tmp/gh-action
+# cd /tmp/gh-action
+# echo '::endgroup::'
+cd $WORKPATH
 # Update checksums
 echo '::group::Updating checksums on PKGBUILD'
 if [[ $INPUT_UPDPKGSUMS == true ]]; then
     sudo -u builder updpkgsums
-    git diff PKGBUILD
 fi
 echo '::endgroup::'
 
@@ -22,7 +19,6 @@ echo '::endgroup::'
 echo '::group::Generating new .SRCINFO based on PKGBUILD'
 if [[ $INPUT_SRCINFO == true ]]; then
     sudo -u builder makepkg --printsrcinfo > .SRCINFO
-    git diff .SRCINFO
 fi
 echo '::endgroup::'
 
@@ -40,7 +36,6 @@ if [[ -n "$INPUT_FLAGS" ]]; then
 fi
 echo '::endgroup::'
 
-echo '::group::Copying files from /tmp/gh-action to $WORKPATH'
-cp -fv /tmp/gh-action/PKGBUILD $WORKPATH/PKGBUILD
-cp -fv /tmp/gh-action/.SRCINFO $WORKPATH/.SRCINFO
-echo '::endgroup::'
+# echo '::group::Copying files from /tmp/gh-action to $WORKPATH'
+# cp -fv /tmp/gh-action/*.pkg.* $WORKPATH/
+# echo '::endgroup::'
