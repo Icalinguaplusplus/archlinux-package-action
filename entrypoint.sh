@@ -2,12 +2,16 @@
 
 # Set path
 # echo '::group::Copying file from $WORKPATH to /tmp/gh-action'
-WORKPATH=$GITHUB_WORKSPACE/$INPUT_PATH
+WORKPATH=/github/workspace
 # # Set path permision
 # sudo -u builder cp -rfv $WORKPATH /tmp/gh-action
 # cd /tmp/gh-action
 # echo '::endgroup::'
+cd $GITHUB_WORKSPACE/$INPUT_PATH
+echo $GITHUB_WORKSPACE/$INPUT_PATH
+ls -la 
 cd $WORKPATH
+ls -la
 # Update checksums
 echo '::group::Updating checksums on PKGBUILD'
 if [[ $INPUT_UPDPKGSUMS == true ]]; then
