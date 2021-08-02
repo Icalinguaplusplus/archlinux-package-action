@@ -32,7 +32,7 @@ fi
 # Run makepkg
 if [[ -n "$INPUT_FLAGS" ]]; then
     echo '::group::Running makepkg with flags'
-    CARCH=$INPUT_CARCH sudo -u builder makepkg $INPUT_FLAGS
+    sudo -u builder CARCH=$INPUT_CARCH makepkg $INPUT_FLAGS
     echo '::endgroup::'
 fi
 
