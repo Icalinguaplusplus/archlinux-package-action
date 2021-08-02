@@ -2,43 +2,39 @@
 
 # Set path
 # echo '::group::Copying file from $WORKPATH to /tmp/gh-action'
-WORKPATH=/github/workspace
+WORKPATH=$GITHUB_WORKSPACE/$INPUT_PATH
 # # Set path permision
 # sudo -u builder cp -rfv $WORKPATH /tmp/gh-action
 # cd /tmp/gh-action
 # echo '::endgroup::'
 cd $GITHUB_WORKSPACE/$INPUT_PATH
-echo $GITHUB_WORKSPACE/$INPUT_PATH
-ls -la 
-cd $WORKPATH
-ls -la
 # Update checksums
-echo '::group::Updating checksums on PKGBUILD'
 if [[ $INPUT_UPDPKGSUMS == true ]]; then
+    echo '::group::Updating checksums on PKGBUILD'
     sudo -u builder updpkgsums
+    echo '::endgroup::'
 fi
-echo '::endgroup::'
 
 # Generate .SRCINFO
-echo '::group::Generating new .SRCINFO based on PKGBUILD'
 if [[ $INPUT_SRCINFO == true ]]; then
-    sudo -u builder makepkg --printsrcinfo > .SRCINFO
+    echo '::group::Generating new .SRCINFO based on PKGBUILD'
+    sudo -u builder makepkg --printsrcinfo >.SRCINFO
+    echo '::endgroup::'
 fi
-echo '::endgroup::'
 
 # Validate with namcap
-echo '::group::Validating PKGBUILD with namcap'
 if [[ $INPUT_NAMCAP == true ]]; then
+    echo '::group::Validating PKGBUILD with namcap'
     namcap -i PKGBUILD
+    echo '::endgroup::'
 fi
-echo '::endgroup::'
 
 # Run makepkg
-echo '::group::Running makepkg with flags'
 if [[ -n "$INPUT_FLAGS" ]]; then
-    sudo -u builder makepkg $INPUT_FLAGS
+    echo '::group::Running makepkg with flags'
+    $INPUT_ENVS sudo -u builder makepkg $INPUT_FLAGS
+    echo '::endgroup::'
 fi
-echo '::endgroup::'
 
 # echo '::group::Copying files from /tmp/gh-action to $WORKPATH'
 # cp -fv /tmp/gh-action/*.pkg.* $WORKPATH/

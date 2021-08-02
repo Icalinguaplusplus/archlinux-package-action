@@ -1,7 +1,7 @@
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
 name: "Arch Linux's package action"
 description: "GitHub Action to run Arch Linux's package tools"
-author: 'datakrama'
+author: 'Clansty'
 branding:
   icon: 'package'
   color: 'green'
@@ -23,6 +23,10 @@ inputs:
     description: 'Extra flags for makepkg'
     default: '-cfs --noconfirm'
     required: false
+  envs:
+    description: 'Extra environments for makepkg'
+    default: ''
+    required: false
   namcap:
     description: 'Validate package with namcap'
     default: 'true'
@@ -37,3 +41,4 @@ runs:
     - ${{ inputs.srcinfo }}
     - ${{ inputs.flags }}
     - ${{ inputs.namcap }}
+    - ${{ inputs.envs }}
