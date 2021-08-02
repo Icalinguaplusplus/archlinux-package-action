@@ -23,9 +23,9 @@ inputs:
     description: 'Extra flags for makepkg'
     default: '-cfs --noconfirm'
     required: false
-  envs:
-    description: 'Extra environments for makepkg'
-    default: ''
+  carch:
+    description: 'Arch for makepkg'
+    default: 'x86_64'
     required: false
   namcap:
     description: 'Validate package with namcap'
@@ -41,4 +41,4 @@ runs:
     - ${{ inputs.srcinfo }}
     - ${{ inputs.flags }}
     - ${{ inputs.namcap }}
-    - ${{ inputs.envs }}
+    - ${{ inputs.carch }}
